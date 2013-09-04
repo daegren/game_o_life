@@ -22,6 +22,7 @@ class Board
     20.times do
       print '-'
     end
+    print "\n"
   end
 
   def run_generation
@@ -30,23 +31,17 @@ class Board
     current_board.each_with_index do |row, row_index|
       row.each_with_index do |cell, col_index|
         c = Cell.new "0"
+        alive_count = neighbours_alive_count(row_index, col_index, current_board)
         if cell.live
-          neighbours = get_neighbours row_index, col_index
-          alive_count = 0
-          neighbours.each do |n|
-            next if n[0] < 0 || n[1] < 0
-            n_cell = current_board[n[0]][n[1]]
-            alive_count += 1 if n_cell.live
-          end
-          puts "cell at #{col_index}, #{row_index} has this many alive neighbours #{alive_count}"
           if alive_count < 2 || alive_count > 3
             c.live = false
           elsif alive_count == 2 || alive_count == 3
             c.live = true
           end
         else
+          c.live = true if alive_count == 3
         end
-        set_cell row_index, col_index, c
+        set_cell(row_index, col_index, c)
       end
     end
   end
@@ -57,6 +52,18 @@ class Board
       [row, col - 1]    ,                 [row, col + 1],
       [row + 1, col - 1], [row + 1, col], [row + 1, col + 1]
     ]
+  end
+
+  def neighbours_alive_count row, col, board
+    neighbours = get_neighbours row, col
+    alive_count = 0
+    neighbours.each do |n|
+      next if n[0] < 0 || n[1] < 0 || n[0] >= board[0].count || n[1] >= board[0].count
+      n_cell = board[n[0]][n[1]]
+      binding.pry if n_cell.nil?
+      alive_count += 1 if n_cell.live
+    end
+    return alive_count
   end
 
 end
