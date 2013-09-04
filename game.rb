@@ -34,6 +34,7 @@ class Game
   end
 
   def run_generation
+    @board.run_generation
     @board.draw_board
     @generation += 1
   end
@@ -44,7 +45,13 @@ class Game
 
   def start_game
     puts "Running simulation for generation #{generation}"
-    run_generation
+    @board.draw_board
+
+    while true
+      puts "Running simulation for generation #{generation}"
+      run_generation
+      sleep 0.5
+    end
   end
 end
 
