@@ -39,7 +39,7 @@ class Board
             alive_count += 1 if n_cell.live
           end
           puts "cell at #{col_index}, #{row_index} has this many alive neighbours #{alive_count}"
-          if alive_count < 2
+          if alive_count < 2 || alive_count > 3
             c.live = false
           elsif alive_count == 2 || alive_count == 3
             c.live = true
