@@ -37,10 +37,13 @@ class Board
             next if n[0] < 0 || n[1] < 0
             n_cell = current_board[n[0]][n[1]]
             alive_count += 1 if n_cell.live
-
           end
-          binding.pry
-          c.live = false if alive_count < 2
+          puts "cell at #{col_index}, #{row_index} has this many alive neighbours #{alive_count}"
+          if alive_count < 2
+            c.live = false
+          elsif alive_count == 2 || alive_count == 3
+            c.live = true
+          end
         else
         end
         set_cell row_index, col_index, c
@@ -52,7 +55,7 @@ class Board
     return [
       [row - 1, col - 1], [row - 1, col], [row - 1, col + 1],
       [row, col - 1]    ,                 [row, col + 1],
-      [row + 1, col - 1], [row + 1, col], [row + 1, col - 1]
+      [row + 1, col - 1], [row + 1, col], [row + 1, col + 1]
     ]
   end
 
