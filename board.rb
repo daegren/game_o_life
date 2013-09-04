@@ -1,4 +1,5 @@
 require 'pry'
+require './cell.rb'
 
 class Board
   def initialize
@@ -18,23 +19,31 @@ class Board
       end
       print "\n"
     end
+    20.times do
+      print '-'
+    end
   end
 
   def run_generation
-    @board.each_with_index do |row, row_index|
+    current_board = @board
+    @board = []
+    current_board.each_with_index do |row, row_index|
       row.each_with_index do |cell, col_index|
+        c = Cell.new "0"
         if cell.live
           neighbours = get_neighbours row_index, col_index
           alive_count = 0
           neighbours.each do |n|
             next if n[0] < 0 || n[1] < 0
-            n_cell = @board[n[0]][n[1]]
+            n_cell = current_board[n[0]][n[1]]
             alive_count += 1 if n_cell.live
 
           end
-          cell.live = false if alive_count < 2
+          binding.pry
+          c.live = false if alive_count < 2
         else
         end
+        set_cell row_index, col_index, c
       end
     end
   end
